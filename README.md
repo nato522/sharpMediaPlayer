@@ -1,2 +1,2 @@
-# sharpMediaPlayer
-Media player handler using SharpIR sensor
+# Sharp IR - MediaPlayer
+Media player handlerX using SharpIR sensor
