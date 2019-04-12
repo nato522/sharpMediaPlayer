@@ -32,7 +32,8 @@
 //Call the sensor "sensor"
 //The model of the sensor is "GP2Y0A02YK0F"
 //The sensor output pin is attached to the pin A0
-SharpIR sensor( SharpIR::GP2Y0A02YK0F, A0 );
+//SharpIR sensor( SharpIR::GP2Y0A02YK0F, A0 );
+SharpIR sensor( SharpIR::GP2Y0A21YK0F, A0 );
 
 // constants. Set of possible actions
 const int START = 0;
@@ -118,7 +119,6 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, HIGH);
         delay(100);
         digitalWrite(RED_PIN, LOW);
-        delay(100);
       }
       break;
     default:
@@ -165,10 +165,12 @@ void defineAction(int change, int distance){
   }
   else{
     execAction(VOLUMEDOWN, PREV_ACTION, AUX_ACTION);
-    if (VOLUMEUP == PREV_ACTION)
+    if (VOLUMEDOWN == PREV_ACTION){
       AUX_ACTION = VOLUMEDOWN;
-    else
+    }
+    else{
       PREV_ACTION = VOLUMEDOWN;
+    }
   }
 }
 
@@ -193,7 +195,7 @@ void loop()
   Serial.print("PREV_ACTION: ");
   Serial.println(PREV_ACTION);
   Serial.println("-----------------------------------------------------");*/
-
+  
   if(distance < 20){
     section = 0;
     change = section - prevSection;
