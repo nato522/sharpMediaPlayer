@@ -30,7 +30,8 @@
 
 //Create a new instance of the library
 //Call the sensor "sensor"
-//The model of the sensor is "GP2Y0A02YK0F"
+//The model of the sensor is "GP2Y0A02YK0F" for 20cm to 150cm
+//The model of the sensor is "GP2Y0A21YK0F" for 5cm to 80cm
 //The sensor output pin is attached to the pin A0
 //SharpIR sensor( SharpIR::GP2Y0A02YK0F, A0 );
 SharpIR sensor( SharpIR::GP2Y0A21YK0F, A0 );
@@ -43,6 +44,25 @@ const int NEXT = 3;
 const int VOLUMEUP = 4;
 const int VOLUMEDOWN = 5;
 const int RESET_VALUE = 100;
+
+// constants for distance measurement - model GP2Y0A21YK0F for 5cm to 80cm
+const int RANGE0 = 5;
+const int RANGE1 = 15;
+const int RANGE2 = 25;
+const int RANGE3 = 35;
+const int RANGE4 = 45;
+const int RANGE5 = 55;
+const int RANGE6 = 65;
+
+// constants for distance measurement - model GP2Y0A02YK0F for 20cm to 150cm
+/*const int RANGE0 = 20;
+const int RANGE1 = 30;
+const int RANGE2 = 40;
+const int RANGE3 = 50;
+const int RANGE4 = 60;
+const int RANGE5 = 70;
+const int RANGE6 = 80;*/
+
 
 // lEDs
 int RED_PIN = 13;
@@ -127,11 +147,11 @@ void execAction(int action, int prevAction, int auxAction){
 }
 
 void detectArea(int distance){
-  if (distance > 20 && distance < 40){
+  if (distance > RANGE0 && distance < RANGE2){
     execAction(PREVIOUS, PREV_ACTION, AUX_ACTION);
     PREV_ACTION = PREVIOUS;
   }
-  else if (distance >= 40 && distance < 60){
+  else if (distance >= RANGE2 && distance < RANGE4){
     if (paused){
       execAction(START, PREV_ACTION, AUX_ACTION);
       PREV_ACTION = START;
@@ -141,7 +161,7 @@ void detectArea(int distance){
       PREV_ACTION = STOP;
     }
   }
-  else if (distance >= 60 && distance < 80){
+  else if (distance >= RANGE4 && distance < RANGE6){
     execAction(NEXT, PREV_ACTION, AUX_ACTION);
     PREV_ACTION = NEXT;
   }
@@ -196,42 +216,42 @@ void loop()
   Serial.println(PREV_ACTION);
   Serial.println("-----------------------------------------------------");*/
   
-  if(distance < 20){
+  if(distance < RANGE0){
     section = 0;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance >= 20 && distance <= 30){
+  else if(distance >= RANGE0 && distance <= RANGE1){
     section = 1;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance > 30 && distance <= 40){
+  else if(distance > RANGE1 && distance <= RANGE2){
     section = 2;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance > 40 && distance <= 50){
+  else if(distance > RANGE2 && distance <= RANGE3){
     section = 3;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance >= 50 && distance <= 60){
+  else if(distance >= RANGE3 && distance <= RANGE4){
     section = 4;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance >= 60 && distance <= 70){
+  else if(distance >= RANGE4 && distance <= RANGE5){
     section = 5;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if(distance >= 70 && distance <= 80){
+  else if(distance >= RANGE5 && distance <= RANGE6){
     section = 6;
     change = section - prevSection;
     defineAction(change, distance);
   }
-  else if (distance > 80){
+  else if (distance > RANGE6){
    section = 7;
    change = section - prevSection;
    defineAction(change, distance);
