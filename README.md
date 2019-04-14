@@ -22,6 +22,9 @@ Connect the sensor to your Arduino board in this manner:
 
 ## Common issues and how to solve them
 
+### Distance is not accurate
+Check that the sensor you are using is the same as the one specified at the beginning of the sketch. Depending on the sensor model you are using, you should change from MODEL0 to MODEL1 or viceversa. Update this change to Arduino and this should be fixed.
+
 ### The port is not working
 By default the port will be set as the same as last time we used it. Simply go to "*Tools > Port > select usb*" to fix this and try to upload your sketch again.
 
