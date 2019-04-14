@@ -2,15 +2,21 @@
 #include <SharpIR.h>
 //#include <Keyboard.h>
 
+#define MODEL0 SharpIR::GP2Y0A21YK0F // The model of the sensor is "GP2Y0A21YK0F" for 5cm to 80cm
+#define MODEL1 SharpIR::GP2Y0A02YK0F // The model of the sensor is "GP2Y0A02YK0F" for 20cm to 150cm
+
+#define MODEL MODEL0
+
 //Create a new instance of the library
 //Call the sensor "sensor"
-//The model of the sensor is "GP2Y0A02YK0F" for 20cm to 150cm
-//The model of the sensor is "GP2Y0A21YK0F" for 5cm to 80cm
 //The sensor output pin is attached to the pin A0
-//SharpIR sensor( SharpIR::GP2Y0A02YK0F, A0 );
-SharpIR sensor( SharpIR::GP2Y0A21YK0F, A0 );
+SharpIR sensor( MODEL, A0 );
 
-// constants. Set of possible actions
+// SharpIR sensor codes
+const int SHORTDISTANCE = 1;
+const int LONGDISTANCE = 3;
+
+// Set of possible actions
 const int START = 0;
 const int STOP = 1;
 const int PREVIOUS = 2;
@@ -19,34 +25,18 @@ const int VOLUMEUP = 4;
 const int VOLUMEDOWN = 5;
 const int RESET_VALUE = 100;
 
-// constants for distance measurement - model GP2Y0A21YK0F for 5cm to 80cm
-const int RANGE0 = 5;
-const int RANGE1 = 15;
-const int RANGE2 = 25;
-const int RANGE3 = 35;
-const int RANGE4 = 45;
-const int RANGE5 = 55;
-const int RANGE6 = 65;
-
-// constants for distance measurement - model GP2Y0A02YK0F for 20cm to 150cm
-/*const int RANGE0 = 20;
-const int RANGE1 = 30;
-const int RANGE2 = 40;
-const int RANGE3 = 50;
-const int RANGE4 = 60;
-const int RANGE5 = 70;
-const int RANGE6 = 80;*/
-
-
-// lEDs
-int RED_PIN = 13;
-int YELLOW_PIN = 12;
-int GREEN_PIN = 11;
+// LEDs
+const int RED_PIN = 13;
+const int YELLOW_PIN = 12;
+const int GREEN_PIN = 11;
 
 // variables
 int section, prevSection, change;
-int PREV_ACTION = RESET_VALUE; // initial value out or action set
-int AUX_ACTION = RESET_VALUE; // initial value out or action set
+int PREV_ACTION = RESET_VALUE; // initial value out of action set
+int AUX_ACTION = RESET_VALUE; // initial value out of action set
+
+// initialize ranges limit points
+int RANGE0, RANGE1, RANGE2, RANGE3, RANGE4, RANGE5, RANGE6 = 0;
 
 // control flags
 bool paused; // 0 = false
@@ -168,28 +158,41 @@ void defineAction(int change, int distance){
   }
 }
 
-void setup()
-{
-  //Keyboard.begin();
+void setup(){
   Serial.begin(9600); //Enable the serial comunication
   pinMode(RED_PIN, OUTPUT);
   pinMode(YELLOW_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
+  switch(MODEL){
+    case SHORTDISTANCE:
+      RANGE0 = 5;
+      RANGE1 = 15;
+      RANGE2 = 25;
+      RANGE3 = 35;
+      RANGE4 = 45;
+      RANGE5 = 55;
+      RANGE6 = 65;
+      break;
+    case LONGDISTANCE:
+      RANGE0 = 20;
+      RANGE1 = 30;
+      RANGE2 = 40;
+      RANGE3 = 50;
+      RANGE4 = 60;
+      RANGE5 = 70;
+      RANGE6 = 80;
+      break;
+    default:
+      Serial.println("Model not detected. Check hardware setup.");
+  }
 }
 
-void loop()
-{
+void loop(){
   delay(150);
   int distance = sensor.getDistance(); //Calculate the distance in centimeters and store the value in a variable
   digitalWrite(RED_PIN, LOW);
   digitalWrite(YELLOW_PIN, LOW);
   digitalWrite(GREEN_PIN, LOW);
-  /*Serial.println("-----------------------------------------------------");
-  Serial.print("Distance: ");
-  Serial.println(distance);
-  Serial.print("PREV_ACTION: ");
-  Serial.println(PREV_ACTION);
-  Serial.println("-----------------------------------------------------");*/
   
   if(distance < RANGE0){
     section = 0;
