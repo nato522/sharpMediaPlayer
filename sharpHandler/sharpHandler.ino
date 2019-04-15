@@ -52,7 +52,7 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, HIGH);
         digitalWrite(GREEN_PIN, LOW);
-        Keyboard.write(0x20); // space
+        Keyboard.write(0x20); // SPACE
         delay(500);
       }
       break;
@@ -71,7 +71,7 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, HIGH);
-        Keyboard.write(0x58); // END
+        Keyboard.write(0xD5); // END
         delay(500);
       }
       break;
@@ -89,9 +89,12 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(GREEN_PIN, HIGH);
         delay(100);
         digitalWrite(GREEN_PIN, LOW);
-        Keyboard.write(0x48); // UP ARROW
-        Keyboard.write(0x48); // UP ARROW
-        Keyboard.write(0x48); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
       }
       break;
     case VOLUMEDOWN:
@@ -108,9 +111,12 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, HIGH);
         delay(100);
         digitalWrite(RED_PIN, LOW);
-        Keyboard.write(0xAF); // DOWN ARROW
-        Keyboard.write(0xAF); // DOWN ARROW
-        Keyboard.write(0xAF); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
       }
       break;
     default:
