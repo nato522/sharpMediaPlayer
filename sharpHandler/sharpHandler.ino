@@ -1,6 +1,6 @@
 //Import the library in the sketch
 #include <SharpIR.h>
-//#include <Keyboard.h>
+#include <Keyboard.h>
 
 #define MODEL0 SharpIR::GP2Y0A21YK0F // The model of the sensor is "GP2Y0A21YK0F" for 5cm to 80cm
 #define MODEL1 SharpIR::GP2Y0A02YK0F // The model of the sensor is "GP2Y0A02YK0F" for 20cm to 150cm
@@ -21,14 +21,14 @@ const int START = 0;
 const int STOP = 1;
 const int PREVIOUS = 2;
 const int NEXT = 3;
-const int VOLUMEUP = 4;
-const int VOLUMEDOWN = 5;
+const int SWIPEUP = 4;
+const int SWIPEDOWN = 5;
 const int RESET_VALUE = 100;
 
 // LEDs
 const int RED_PIN = 13;
-const int YELLOW_PIN = 12;
-const int GREEN_PIN = 11;
+const int YELLOW_PIN = 8;
+const int GREEN_PIN = 4;
 
 // variables
 int section, prevSection, change;
@@ -52,6 +52,7 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, HIGH);
         digitalWrite(GREEN_PIN, LOW);
+        Keyboard.write(0x20); // SPACE
         delay(500);
       }
       break;
@@ -61,6 +62,8 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, HIGH);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, LOW);
+        Keyboard.write(0xD8); // Arrow left
+        Keyboard.write(0xD8); // Arrow left
         delay(500);
       }
       break;
@@ -70,10 +73,12 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, HIGH);
+        Keyboard.write(0xD7); // Arrow right
+        Keyboard.write(0xD7); // Arrow right
         delay(500);
       }
       break;
-    case VOLUMEUP:
+    case SWIPEUP:
       if ((action == prevAction)&&(action == auxAction)){
         Serial.println("Volume UP");
         digitalWrite(RED_PIN, HIGH);
@@ -87,9 +92,15 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(GREEN_PIN, HIGH);
         delay(100);
         digitalWrite(GREEN_PIN, LOW);
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
       }
       break;
-    case VOLUMEDOWN:
+    case SWIPEDOWN:
       if ((action == prevAction)&&(action == auxAction)){
         Serial.println("Volume DOWN");
         digitalWrite(GREEN_PIN, HIGH);
@@ -97,12 +108,18 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(GREEN_PIN, LOW);
         delay(100);
         digitalWrite(YELLOW_PIN, HIGH);
-        delay(100);
+        delay(100); 
         digitalWrite(YELLOW_PIN, LOW);
         delay(100);
         digitalWrite(RED_PIN, HIGH);
         delay(100);
         digitalWrite(RED_PIN, LOW);
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
+        Keyboard.write(0xD9); // DOWN ARROW
       }
       break;
     default:
@@ -138,28 +155,29 @@ void detectArea(int distance){
 
 void defineAction(int change, int distance){
   if (change > 0){
-    execAction(VOLUMEUP, PREV_ACTION, AUX_ACTION);
-    if (VOLUMEUP == PREV_ACTION)
-      AUX_ACTION = VOLUMEUP;
+    execAction(SWIPEUP, PREV_ACTION, AUX_ACTION);
+    if (SWIPEUP == PREV_ACTION)
+      AUX_ACTION = SWIPEUP;
     else
-      PREV_ACTION = VOLUMEUP;
+      PREV_ACTION = SWIPEUP;
   }
   else if (change == 0){
     detectArea(distance);
   }
   else{
-    execAction(VOLUMEDOWN, PREV_ACTION, AUX_ACTION);
-    if (VOLUMEDOWN == PREV_ACTION){
-      AUX_ACTION = VOLUMEDOWN;
+    execAction(SWIPEDOWN, PREV_ACTION, AUX_ACTION);
+    if (SWIPEDOWN == PREV_ACTION){
+      AUX_ACTION = SWIPEDOWN;
     }
     else{
-      PREV_ACTION = VOLUMEDOWN;
+      PREV_ACTION = SWIPEDOWN;
     }
   }
 }
 
 void setup(){
   Serial.begin(9600); //Enable the serial comunication
+  Keyboard.begin();
   pinMode(RED_PIN, OUTPUT);
   pinMode(YELLOW_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
