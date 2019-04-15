@@ -39,7 +39,7 @@ int AUX_ACTION = RESET_VALUE; // initial value out of action set
 int RANGE0, RANGE1, RANGE2, RANGE3, RANGE4, RANGE5, RANGE6 = 0;
 
 // control flags
-bool scrollMode = false; // 0 = false || 1 = true
+bool paused = false; // 0 = false || 1 = true
 
 // action functions
 void execAction(int action, int prevAction, int auxAction){
@@ -47,30 +47,32 @@ void execAction(int action, int prevAction, int auxAction){
     case STOP:
     case START:
       if (action == prevAction){
-        Serial.println((scrollMode==true) ? ("START") : ("STOP"));
+        Serial.println((paused==true) ? ("START") : ("STOP"));
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, HIGH);
         digitalWrite(GREEN_PIN, LOW);
-        scrollMode = !scrollMode;
+        paused = !paused;
         delay(500);
       }
       break;
     case PREVIOUS:
       if (action == prevAction){
-        Serial.println("PREVIOUS");
+        Serial.println("Backwards");
         digitalWrite(RED_PIN, HIGH);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, LOW);
+        Keyboard.write(0xD8); // Arrow left
         Keyboard.write(0xD8); // Arrow left
         delay(500);
       }
       break;
     case NEXT:
       if (action == prevAction){
-        Serial.println("NEXT");
+        Serial.println("Forward");
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, HIGH);
+        Keyboard.write(0xD7); // Arrow right
         Keyboard.write(0xD7); // Arrow right
         delay(500);
       }
@@ -89,21 +91,12 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(GREEN_PIN, HIGH);
         delay(100);
         digitalWrite(GREEN_PIN, LOW);
-        if(scrollMode){
-          Keyboard.write(0xDA); // UP ARROW
-          Keyboard.write(0xDA); // UP ARROW
-          Keyboard.write(0xDA); // UP ARROW
-          Keyboard.write(0xDA); // UP ARROW
-          Keyboard.write(0xDA); // UP ARROW
-          Keyboard.write(0xDA); // UP ARROW
-        }else{
-          //Keyboard.write(KEY_LEFT_GUI);
-          //Keyboard.write(0x2B);
-          //Keyboard.write(0x43);
-          //Keyboard.write('-');
-          Keyboard.write(0x2B);
-          //Keyboard.releaseAll();
-        }
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
+        Keyboard.write(0xDA); // UP ARROW
       }
       break;
     case SWIPEDOWN:
@@ -139,7 +132,7 @@ void detectArea(int distance){
     PREV_ACTION = PREVIOUS;
   }
   else if (distance >= RANGE2 && distance < RANGE4){
-    if (scrollMode){
+    if (paused){
       execAction(START, PREV_ACTION, AUX_ACTION);
       PREV_ACTION = START;
     }
@@ -182,7 +175,7 @@ void defineAction(int change, int distance){
 }
 
 void setup(){
-  Serial.begin(9600); //Enable the serial comunication
+  Serial.begin(9600); //Enable the serial communication
   Keyboard.begin();
   pinMode(RED_PIN, OUTPUT);
   pinMode(YELLOW_PIN, OUTPUT);

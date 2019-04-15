@@ -10,16 +10,16 @@ The goal of this project is to create a new way to interact with the computer us
 
 At the moment we are working with two models of this sensor:
 
-- **GP2Y0A21YK0F** (5cm to 80cm) name as MODEL1 in the code
-- **GP2Y0A02YK0F** (20cm to 150cm) name as MODEL0 in the code
+- **GP2Y0A21YK0F** (5cm to 80cm) name as MODEL0 in the code
+- **GP2Y0A02YK0F** (20cm to 150cm) name as MODEL1 in the code
 
-We suggest using MODEL1 in order to get more reliable behaviour.
+We suggest using MODEL0 in order to get more reliable behaviour.
 
 ## RANGES
 
 The range used by the sensor (5 cm to 80 cm or 20 cm to 150 cm depending on the model) is split into 7 areas. These areas are the ones which decide which action is to be used. The ranges are:
 
-- **MODEL1**
+- **MODEL0**
 
   - RANGE0 = 5 cm;
   - RANGE1 = 15 cm;
@@ -29,7 +29,7 @@ The range used by the sensor (5 cm to 80 cm or 20 cm to 150 cm depending on the 
   - RANGE5 = 55 cm;
   - RANGE6 = 65 cm;
 
-- **model0**
+- **MODEL1**
   - RANGE0 = 20 cm;
   - RANGE1 = 30 cm;
   - RANGE2 = 40 cm;
