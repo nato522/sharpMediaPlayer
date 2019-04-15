@@ -21,8 +21,8 @@ const int START = 0;
 const int STOP = 1;
 const int PREVIOUS = 2;
 const int NEXT = 3;
-const int VOLUMEUP = 4;
-const int VOLUMEDOWN = 5;
+const int SWIPEUP = 4;
+const int SWIPEDOWN = 5;
 const int RESET_VALUE = 100;
 
 // LEDs
@@ -62,6 +62,8 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, HIGH);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, LOW);
+        Keyboard.write(0xD8); // Arrow left
+        Keyboard.write(0xD8); // Arrow left
         delay(500);
       }
       break;
@@ -71,11 +73,12 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, LOW);
         digitalWrite(GREEN_PIN, HIGH);
-        Keyboard.write(0xD5); // END
+        Keyboard.write(0xD7); // Arrow right
+        Keyboard.write(0xD7); // Arrow right
         delay(500);
       }
       break;
-    case VOLUMEUP:
+    case SWIPEUP:
       if ((action == prevAction)&&(action == auxAction)){
         Serial.println("Volume UP");
         digitalWrite(RED_PIN, HIGH);
@@ -97,7 +100,7 @@ void execAction(int action, int prevAction, int auxAction){
         Keyboard.write(0xDA); // UP ARROW
       }
       break;
-    case VOLUMEDOWN:
+    case SWIPEDOWN:
       if ((action == prevAction)&&(action == auxAction)){
         Serial.println("Volume DOWN");
         digitalWrite(GREEN_PIN, HIGH);
@@ -152,22 +155,22 @@ void detectArea(int distance){
 
 void defineAction(int change, int distance){
   if (change > 0){
-    execAction(VOLUMEUP, PREV_ACTION, AUX_ACTION);
-    if (VOLUMEUP == PREV_ACTION)
-      AUX_ACTION = VOLUMEUP;
+    execAction(SWIPEUP, PREV_ACTION, AUX_ACTION);
+    if (SWIPEUP == PREV_ACTION)
+      AUX_ACTION = SWIPEUP;
     else
-      PREV_ACTION = VOLUMEUP;
+      PREV_ACTION = SWIPEUP;
   }
   else if (change == 0){
     detectArea(distance);
   }
   else{
-    execAction(VOLUMEDOWN, PREV_ACTION, AUX_ACTION);
-    if (VOLUMEDOWN == PREV_ACTION){
-      AUX_ACTION = VOLUMEDOWN;
+    execAction(SWIPEDOWN, PREV_ACTION, AUX_ACTION);
+    if (SWIPEDOWN == PREV_ACTION){
+      AUX_ACTION = SWIPEDOWN;
     }
     else{
-      PREV_ACTION = VOLUMEDOWN;
+      PREV_ACTION = SWIPEDOWN;
     }
   }
 }
