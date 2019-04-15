@@ -1,6 +1,6 @@
 //Import the library in the sketch
 #include <SharpIR.h>
-//#include <Keyboard.h>
+#include <Keyboard.h>
 
 #define MODEL0 SharpIR::GP2Y0A21YK0F // The model of the sensor is "GP2Y0A21YK0F" for 5cm to 80cm
 #define MODEL1 SharpIR::GP2Y0A02YK0F // The model of the sensor is "GP2Y0A02YK0F" for 20cm to 150cm
@@ -27,8 +27,8 @@ const int RESET_VALUE = 100;
 
 // LEDs
 const int RED_PIN = 13;
-const int YELLOW_PIN = 12;
-const int GREEN_PIN = 11;
+const int YELLOW_PIN = 8;
+const int GREEN_PIN = 4;
 
 // variables
 int section, prevSection, change;
@@ -160,6 +160,7 @@ void defineAction(int change, int distance){
 
 void setup(){
   Serial.begin(9600); //Enable the serial comunication
+  Keyboard.begin();
   pinMode(RED_PIN, OUTPUT);
   pinMode(YELLOW_PIN, OUTPUT);
   pinMode(GREEN_PIN, OUTPUT);
