@@ -1,12 +1,19 @@
+How to control Youtube of Adobe Acrobat Reader DC within Sharp sensor by
+
+- Renato Pinto López
+- Mario López Batres
+
 # SHARP IR
 
 - Youtube handler using SharpIR sensor
+- PDF Viewer handler using SharpIR sensor
 
 ## DESCRIPTION
 
 The goal of this project is to create a new way to interact with the computer using Arduino as the required Tool. The tasks to be completed are split into two different sections:
 
 - Interact with **Youtube** to allow the user to perform some actions (start/pause | next/previous video | Volume up/down) with as less effort as possible and not requiring the hands in the process (handless)
+- Interact with **Adobe Acrobat Reader DC** to allow the user to perform some actions (Scroll down/up | next/previous page | zoom in/out)
 
 At the moment we are working with two models of this sensor:
 
@@ -19,24 +26,29 @@ We suggest using MODEL0 in order to get more reliable behaviour.
 
 The range used by the sensor (5 cm to 80 cm or 20 cm to 150 cm depending on the model) is split into 7 areas. These areas are the ones which decide which action is to be used. The ranges are:
 
-- **MODEL0**
+- **MODEL0 - GP2Y0A21YK0F**
 
-  - RANGE0 = 5 cm;
-  - RANGE1 = 15 cm;
-  - RANGE2 = 25 cm;
-  - RANGE3 = 35 cm;
-  - RANGE4 = 45 cm;
-  - RANGE5 = 55 cm;
-  - RANGE6 = 65 cm;
+  | Range | Distance | Section | Led Color |
+  | ----- | :------: | :-----: | :-------: |
+  | #1    |   5 cm   |    1    |    Red    |
+  | #2    |  15 cm   |    1    |    Red    |
+  | #3    |  25 cm   |    1    |    Red    |
+  | #4    |  35 cm   |    2    |  Yellow   |
+  | #5    |  45 cm   |    2    |  Yellow   |
+  | #6    |  55 cm   |    3    |   Green   |
+  | #7    |  65 cm   |    3    |   Green   |
 
-- **MODEL1**
-  - RANGE0 = 20 cm;
-  - RANGE1 = 30 cm;
-  - RANGE2 = 40 cm;
-  - RANGE3 = 50 cm;
-  - RANGE4 = 60 cm;
-  - RANGE5 = 70 cm;
-  - RANGE6 = 80 cm;
+- **MODEL1 - GP2Y0A02YK0F**
+
+  | Range | Distance | Section | Led Color |
+  | ----- | :------: | :-----: | :-------: |
+  | #1    |  20 cm   |    1    |    Red    |
+  | #2    |  30 cm   |    1    |    Red    |
+  | #3    |  40 cm   |    1    |    Red    |
+  | #4    |  50 cm   |    2    |  Yellow   |
+  | #5    |  60 cm   |    2    |  Yellow   |
+  | #6    |  70 cm   |    3    |   Green   |
+  | #7    |  80 cm   |    3    |   Green   |
 
 ## ACTIONS
 
@@ -44,9 +56,9 @@ The actions, as it happened with the ranges, are defined by the type of sensor u
 
 **Place hand**
 
-- Between RANGE0 and RANGE 2 -> Previous video
-- Between RANGE2 and RANGE4 -> Start/Stop the video
-- Between RANGE4 and RANGE 6 -> Next video
+- Section 1 -> Previous video
+- Section 2 -> Start/Stop the video
+- Section 3 -> Next video
 
 | ACTION LED |       Pin        |
 | ---------- | :--------------: |
@@ -56,8 +68,8 @@ The actions, as it happened with the ranges, are defined by the type of sensor u
 
 **Swipe action:**
 
-- From RANGE6 to RANGE0 -> Volume down
-- From RANGE0 to RANGE6 -> Volume up
+- From Section 1 to Section 3 -> Volume up
+- From Section 3 to Section 1 -> Volume down
 
 On this actions the LEDs will be light up sequentialy
 
@@ -65,6 +77,32 @@ On this actions the LEDs will be light up sequentialy
 | -------------------- | :---------: |
 | Red + Yellow + Green |  Volume Up  |
 | Green + Yellow + Red | Volume Down |
+
+### ADOBE ACROBAT READER DC
+
+**Place hand**
+
+- Section 1 -> Previous page/Scroll down
+- Section 2 -> Change mode from Scrolling/Paging
+- Section 3 -> Next page/Scroll up
+
+| ACTION LED |            Pin            |
+| ---------- | :-----------------------: |
+| Red        | Previous page/Scroll down |
+| Yellow     |        Change mode        |
+| Green      |    Next page/Scroll up    |
+
+**Swipe action:**
+
+- From Section 1 to Section 3 -> Zoom out
+- From Section 3 to Section 1 -> Zoom in
+
+On this actions the LEDs will be light up sequentialy
+
+| ACTION LED           |   Pin    |
+| -------------------- | :------: |
+| Red + Yellow + Green | Zoom out |
+| Green + Yellow + Red | Zoom in  |
 
 ## Get it running
 
@@ -84,8 +122,6 @@ Connect the sensor to your Arduino board in this manner:
 | Black  | GND |
 | Yellow | A0  |
 
-![breadboard schematics](resources/circuit.jpg)
-
 ### BREADBOARD/PROTOBOARD
 
 On the breadboard just the 5 LED are connected:
@@ -100,6 +136,8 @@ To accomplish this circuit it is mandatory to connect the GND pin to the 'short 
 | Red        | 13  |
 | Yellow     |  8  |
 | Green      |  4  |
+
+![breadboard schematics](resources/circuit.jpg)
 
 ## COMMON ISSUES AND HOW TO SOLVE THEM
 
