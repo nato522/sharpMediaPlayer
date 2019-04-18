@@ -30,7 +30,7 @@ const int RED_PIN = 13;
 const int YELLOW_PIN = 8;
 const int GREEN_PIN = 4;
 const int RED_PIN2 = 3; //Scrolling mode
-const int WHITE_PIN2 = 3; //Paging mode
+const int WHITE_PIN2 = 2; //Paging mode
 
 
 // variables
