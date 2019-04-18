@@ -29,6 +29,9 @@ const int RESET_VALUE = 100;
 const int RED_PIN = 13;
 const int YELLOW_PIN = 8;
 const int GREEN_PIN = 4;
+const int RED_PIN2 = 3; //Scrolling mode
+const int WHITE_PIN2 = 3; //Paging mode
+
 
 // variables
 int section, prevSection, change;
@@ -48,7 +51,15 @@ void execAction(int action, int prevAction, int auxAction){
     case START:
       if (action == prevAction){
         scrollMode = !scrollMode;
-        Serial.println((scrollMode==true) ? ("Scrolling") : ("Paging"));
+        if(scrollMode==true){
+        digitalWrite(RED_PIN2, HIGH);
+        digitalWrite(WHITE_PIN2, LOW);
+        Serial.println("Scrolling");
+        } else {
+        digitalWrite(RED_PIN2, LOW);
+        digitalWrite(WHITE_PIN2, HIGH);
+        Serial.println("Paging");
+        }
         digitalWrite(RED_PIN, LOW);
         digitalWrite(YELLOW_PIN, HIGH);
         digitalWrite(GREEN_PIN, LOW);
