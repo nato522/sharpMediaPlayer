@@ -52,6 +52,7 @@ void execAction(int action, int prevAction, int auxAction){
         digitalWrite(YELLOW_PIN, HIGH);
         digitalWrite(GREEN_PIN, LOW);
         paused = !paused;
+        Keyboard.write(0x20); // SPACE
         delay(500);
       }
       break;
