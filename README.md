@@ -84,7 +84,7 @@ Connect the sensor to your Arduino board in this manner:
 | Black  | GND |
 | Yellow | A0  |
 
-![breadboard schematics](img/circuit.jpg)
+![breadboard schematics](resources/circuit.jpg)
 
 ### BREADBOARD/PROTOBOARD
 
